@@ -1,14 +1,4 @@
-/app/Http/Controllers/TransporterController.php
-/app/Http/Controllers/LocationController.php
-/app/Http/Controllers/ScheduleController.php
-
-
-/routes/api.php
-
-/database/migrations
-
-/app/Location.php
-/app/Transporter.php
-/app/Schedule.php
-
 .env
+
+./storage/framework/
+./storage/logs/
