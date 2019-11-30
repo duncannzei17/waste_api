@@ -12,19 +12,20 @@ class TransporterController extends Controller
 {
     public function index(Request $request)
     {
-        $transporters = DB::table('users')->where('user_type', '1')->get();
-	    $count = count($transporters);
-        $data = array();
+        $query = DB::table('users')->where('user_type', '1')->get();
+	    $count = count($query);
+        $transporters = [];
 
-        if (count > 0){
-            for($i=0;i<count;$i++){
-                $data = $transporter[i];	
-            }
+        if ($count > 0){
+             for($i=0; $i<$count;$i++){
+                 $transporters[$i] = $query[$i];	
+             }
         } 
 
+    
         return response()->json([
             "success" => true,
-            "transporters" => $data
+            "transporters" => $transporters
         ]);
 
     }

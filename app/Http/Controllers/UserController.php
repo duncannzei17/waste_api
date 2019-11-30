@@ -87,10 +87,17 @@ class UserController extends Controller
 }
 
 public function returnUsers(){
-    $users = DB::table('users')->get();
+    $query = DB::table('users')->where('user_type', 0)->get();
+    $users = [];
+    $count = count($query);
+    
+    for($i=0; $i < $count; $i++){
+        $users[$i] = $query[$i];
+    } 
+
     return response()->json([
         'success' => true,
-        'results' =>$users
+        'results' => $users
     ]);
 }
 
