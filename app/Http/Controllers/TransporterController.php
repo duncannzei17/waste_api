@@ -12,7 +12,8 @@ class TransporterController extends Controller
 {
     public function index(Request $request)
     {
-        $query = DB::table('users')->where('user_type', '1')->get();
+        $query = DB::table('users')->join('transporters','users.id','=','transporters.user_id')
+                ->where('user_type', '1')->get();
 	    $count = count($query);
         $transporters = [];
 
@@ -21,7 +22,6 @@ class TransporterController extends Controller
                  $transporters[$i] = $query[$i];	
              }
         } 
-
     
         return response()->json([
             "success" => true,
@@ -67,20 +67,23 @@ class TransporterController extends Controller
     }
 
 
-    public function show($id)
+    public function showSchedules(Request $request)
     {
+        $id = $request->input('transporter_id');
+        $query = DB::select("SELECT * FROM schedules WHERE  transporter_id = '".$id."'  AND active = '1' ");
 
+        $count = count($query);
+        $schedules = [];
+
+        if ($count > 0){
+             for($i=0; $i<$count;$i++){
+                 $schedules[$i] = $query[$i];    
+             }
+        } 
+
+        return response()->json([
+            "schedules" => $schedules
+        ]);
     }
 
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function destroy($id)
-    {
-        //
-    }
 }

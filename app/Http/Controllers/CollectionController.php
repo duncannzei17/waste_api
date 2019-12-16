@@ -15,13 +15,7 @@ class CollectionController extends Controller
      */
     public function index()
     {
-        $today = date('D', strtotime(date("Y-m-d")));
-        $schedules = DB::select("SELECT * FROM schedules WHERE ( collection_day = '". $today ."'  AND active = 1) OR (frequency = 'daily' AND active = 1)");
-
-        return response()->json([
-            "shedules" => $schedules
-        ]);
-
+        //
 
     }
 
@@ -58,15 +52,36 @@ class CollectionController extends Controller
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Responsecollection_day
-     */
-    public function show($id)
+    
+    public function show(Request $request)
     {
-        //
+        $id = $request->input('schedule_id');
+       // $query = DB::select("SELECT * FROM collections WHERE  schedule_id = '".$id."' ");
+    //    DB::table('users')->join('transporters','users.id','=','transporters.user_id')
+    //             ->where('user_type', '1')->get();
+        $query = DB::table('collections')->join('users','collections.user_id','=','users.id')
+                   ->where('schedule_id', $id)->get();
+        $count = count($query);
+        $collections = [];
+
+        if ($count > 0){
+             for($i=0; $i<$count;$i++){
+                 $coordinates = unserialize($query[$i]->address);
+                 $lat = $coordinates['latitude'];
+                 $long = $coordinates['longitude'];
+                 $collections[$i]['firstName'] = $query[$i]->firstName;
+                 $collections[$i]['lastName'] = $query[$i]->lastName;
+                 $collections[$i]['phone'] = $query[$i]->phone;
+                 $collections[$i]['region'] = $query[$i]->region;
+                 $collections[$i]['latitude'] = $lat;
+                 $collections[$i]['longitude'] = $long;
+                // $collections[$i] = $query[$i];    
+             }
+        } 
+
+        return response()->json([
+            "collections" => $collections
+        ]);
     }
 
     /**

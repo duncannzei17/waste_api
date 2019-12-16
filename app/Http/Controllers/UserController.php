@@ -18,6 +18,8 @@ class UserController extends Controller
         $plainPassword=$request->password;
         $password=bcrypt($request->password);
         $request->request->add(['password' => $password]);
+        $msisdn = preg_replace('/^0/','254',$request->phone);
+        $request->request->add(['phone' => $msisdn]);
         // create the user account
         $created=User::create($request->all());
         $request->request->add(['password' => $plainPassword]);

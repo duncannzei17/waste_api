@@ -15,14 +15,23 @@ Route::get('/logout', 'UserController@logout');
 
 Route::post('/userLocation', 'LocationController@store');
 Route::get('/transporters', 'TransporterController@index');
+Route::post('/transporterSchedules', 'TransporterController@showSchedules');
+
+
+Route::get('/paymentsInitiate', 'PaymentController@register');
+Route::post('/paymentsValidate', 'PaymentController@validatePayment');
+Route::get('/paymentsConfirm', 'PaymentController@confirmPayment');
 
 
 Route::post('/addSchedule', 'ScheduleController@store');
 Route::post('/searchUser', 'TransporterController@searchUser');
 Route::post('/createTransporter', 'TransporterController@store');
+Route::post('/checkSubscription', 'SubscriptionController@checkSubscription');
+Route::post('/updateSubscription', 'SubscriptionController@updateSubscription');
 
-Route::get('/showSchedules', 'CollectionController@index');
+Route::get('/showSchedules', 'ScheduleController@index');
 Route::post('/addCollection', 'CollectionController@store');
+Route::post('/showCollections', 'CollectionController@show');
 
 
 
